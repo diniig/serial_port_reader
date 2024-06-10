@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"go.bug.st/serial"
 )
@@ -24,7 +25,10 @@ func main() {
 
 	// Open the first serial port detected at 9600bps N81
 	mode := &serial.Mode{
-		BaudRate: 115200, // 9600 19200 57600 115200
+		// BaudRate: 9600,
+		BaudRate: 19200, //?
+		// BaudRate: 57600,
+		// BaudRate: 115200,
 		Parity:   serial.NoParity,
 		DataBits: 8,
 		StopBits: serial.OneStopBit,
@@ -39,8 +43,12 @@ func main() {
 
 	buff := make([]byte, 100)
 	for {
+		start := time.Now()
 		// Reads up to 100 bytes
 		n, err := port.Read(buff)
+		if time.Now().Sub(start) > time.Second {
+			fmt.Printf("==========================\n")
+		}
 		if err != nil {
 			log.Fatal(err)
 		}
